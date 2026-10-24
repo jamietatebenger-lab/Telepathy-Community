@@ -1,6 +1,6 @@
 Metadata-Version: 2.1
 Name: telepathy
-Version: 2.3.2
+Version: 2.3.4
 Summary: An OSINT toolkit for investigating Telegram chats.
 Home-page: https://pypi.python.org/pypi/telepathy/
 Author: Jordan Wildon
@@ -9,17 +9,40 @@ License: LICENSE.txt
 Description-Content-Type: text/markdown
 License-File: LICENSE.txt
 
-Telepathy: An OSINT toolkit for investigating Telegram chats. Developed by Jordan Wildon. Version 2.3.2.
+## Telepathy: An OSINT toolkit for investigating Telegram chats. Developed by Jordan Wildon. Version 2.3.4.
 
 Telepathy has been described as the "swiss army knife of Telegram tools," allowing OSINT analysts, researchers and digital investigators to archive Telegram chats (including replies, media content, comments and reactions), gather memberlists, lookup users by given location, analyze top posters in a chat, map forwarded messages, and more.
 
 The toolkit has already seen a wide variety of use cases, including but not limited to: in investigative and data journalism, by academic and research institutions, and for intelligence gathering and analysis.
 
 
-## !! IMPORTANT: 
-With the update to 2.3.0, you will need to delete your login.txt file to prevent errors if using the alternative login feature. Upon first use, Telepathy will guide you through setup of the details once again. To work around this, instead of deleting and recreating the file, you can add a newline character to the end of your current API details to ensure Telepathy scans the file correctly.
 
-A note on unique identifiers per account: You will notice that depending on which alternative account you use, the access hash will vary. The same will happen with User IDs, which are unique to each Telegram account accessing them. For deeper data analysis based on user IDs, this is important to bare in mind as users will have as many unique IDs as accounts you've used to access information. In future, Telepathy may include a feature to assign unique identifier per account found based on a hash of the available information, regardless of which account accessed the data.
+## Purpose
+
+Telepathy-Community is the public release of Telepathy, a Python command-line OSINT toolkit for collecting and analysing public Telegram chats. `setup.py` installs a single console entry point, `telepathy`, bound to `telepathy.telepathy:cli`; the toolkit's features (basic and comprehensive chat scans, memberlist collection, forward edgelists, media archiving, user and location lookups, chat export, reply retrieval and translation) are described in the usage sections below. The repository is public, MIT-licensed, and carries 1,232 stars and 161 forks. It has no internal runtime and nothing in the Prose estate depends on it: `prose-catalogue` records `runtime: none`. External users are the only consumers of this repository.
+
+**This repository is not actively maintained, and the rest of this README does not reflect that.** The last change to the toolkit's own source was on 2024-07-12. Every commit since is repository housekeeping: security-workflow caller stubs on 2026-08-07 and a Dependabot dependency bump on 2026-08-10. The published package on PyPI, `telepathy` 2.3.4, was last uploaded on 2024-07-12 and has not been republished since. There are 41 open issues; installation and runtime failure reports filed between 2023 and 2025 stand with no maintainer reply. Sections of this README written in the future tense — the upcoming-changes and upcoming-features lists, and the statements that deeper analytics and further location-scanning support are planned or being explored — describe work that is not in progress. `src/telepathy/const.py` likewise still sets `__status__ = "Development"`.
+
+Two concrete consequences for anyone arriving from the installation instructions:
+
+- **The source install path has been repaired in this branch.** The CLI module now parses, package imports use package-relative paths, and the source package has a valid `__init__.py` marker.
+- **The documented install paths now agree on core metadata.** `setup.py` and `requirements.txt` both require Telethon 1.36.0, and the package version in `src/telepathy/const.py` matches this README and `setup.py` at 2.3.4.
+
+The `pip3 install telepathy` path installs the July 2024 release, which predates none of the open bug reports above and has not changed since. UNKNOWN: whether the published 2.3.4 sdist carries the same syntax error as the repository source — the sdists committed under `dist/` are 2.3.2 and earlier, and the published 2.3.4 artefact was not downloaded or inspected. The clone URL given in the installation section points at the repository's former path and resolves to the current location via a GitHub redirect (HTTP 301), so it still works.
+
+This section is written against the default branch, `main`, at commit `f1a5b95`.
+
+## Ownership
+
+Owner: **Al Baker — al@prose.ltd**, sole operator. This is confirmed by `prose-catalogue` (`owner: al`) and by the `owner-al` topic on the GitHub repository. There is no `CODEOWNERS` file on the default branch.
+
+Escalation for anything concerning this repository goes to al@prose.ltd. External bug reports are not currently triaged, and no response time is offered — the open-issue record above is the accurate expectation to set.
+
+The contact routes named elsewhere in this README, in the package metadata (`setup.py` `author_email`, and `__maintainer__` and `__email__` in `src/telepathy/const.py`) and in the CLI start-up banner printed by `src/telepathy/utils.py` are a former maintainer's personal address and social account. They are historical attribution, not Prose Intelligence support channels, and correspondence sent to them will not reach the owner.
+
+`prose-catalogue` records `lifecycle: development` for this repository, but the GitHub repository carries no `lifecycle-*` topic — its only topic is `owner-al`. That divergence is documented here rather than resolved: changing a repository's lifecycle alters which CI checks are required, and is the owner's decision alone.
+## Are you looking for a enterprise-grade version of Telepathy?
+Visit [prose.ltd](https://prose.ltd) to find out how we can turbocharge your Telegram data collection with Telepathy Pro. No accounts, dealing with the command line, or hassle needed!
 
 
 
@@ -118,7 +141,7 @@ $ telepathy -t @test_user -u
 
 - **'--location', '-l']**
 
-Finds users near to specified coordinates. Input should be longitude followed by latitude, seperated by a comma. This feature only works if your Telegram account has a profile image which is set to be publicly viewable.
+Finds users near to specified coordinates. Input should be longitude followed by latitude, seperated by a comma. This feature only works if your Telegram account has a profile image which is set to be publicly viewable. As of 2.3.4, this feature now includes channel lookups. 
 
 While searches for multiple locations at once may work in some cases, Telegram appears to have a limit on how quickly an account can cycle through locations. At the time of writing, this appears to be at least ten minutes. Further location scanning support while using multiple accounts is being explored for a future release.
 
@@ -179,42 +202,27 @@ Telegram chats are organised into three key types: Channels, Megagroups/Supergro
 
 
 ## Upcoming changes
-In some environments (particularly Windows), Telepathy struggles to effectively manage files and can sometimes produce errors. Fixes for these errors will come in due course.
+The source-install errors previously noted above have been corrected in this branch. The published PyPI package has not been updated.
 
 Upcoming features include:
 
   - [ ] Adding a time specification flag to set archiving for specific period.
-  - [x] The ability to gather the number of reactions to messages, including statistics on engagement rate.
-  - [ ] Finding a method to once again gather complete memberlists (currently restricted by the API).
-  - [ ] Improved statistics: including timestamp analysis for channels.
-  - [ ] Generating an entirely automated complete report, including visualisation for some statistics.
-  - [ ] Hate speech analytics.
-  - [ ] Include sockpuppet account provisioning (creation of accounts from previous exported lists).
-  - [ ] Listing who has group admin rights in memberlists.
-  - [ ] Media downloaded in the background to increase efficiency or progress bars for media downloads to give a better estimation of runtime.
-  - [x] When media archiving is flagged, the location of downloaded content will be added to the archive file.
-  - [ ] Exploring, and potentially integrating, media cross-checks based on https://github.com/conflict-investigations/media-search-engine.
+  - [ ] A new method to once again gather complete memberlists (currently restricted by the API).
   - [ ] Ensuring inferred channel memberlists don't contain duplicate entries.
-  - [ ] Introducing local chat retrival within the location lookup module.
-  - [x] Further code refactoring to ensure long-term maintainability.
-  - [x] Adding additional alternative logins.
-  - [ ] Improved language support.
-  - [ ] Correctly define destinction between reply (as in a chat) and comment (as in channel).
   - [ ] Exploration of whether channel events can be included, such as name changes.
-  - [x] Including last seen on user lookup.
 
 ## feedback
 
-Please send feedback to @jordanwildon on Twitter. You can follow Telepathy updates at @TelepathyDB.
+Please send feedback to @jordanwildon on Twitter. You can follow Telepathy updates at @proseltd.
 
 
 ## Usage terms
 
-You may use Telepathy however you like, but your usecase is your responsibility. Be safe and respectful.
+You may use Telepathy however you like, but your usecase is your responsibility. Be safe and respectful. If your usecase is for commercial purposes, please consider cour enterprise options at [prose.ltd](https://prose.ltd)
 
 
 ## Credits
 
-All tools created by Jordan Wildon (@jordanwildon). Special thanks go to [Giacomo Giallombardo](https://github.com/aaarghhh) for adding additional features and code refactoring, [jkctech](https://github.com/jkctech/Telegram-Trilateration) for collaboration on location lookup via the 'People Near Me' feature, and Alex Newhouse (@AlexBNewhouse) for his help with Telepathy v1. Shoutout also to [Francesco Poldi](https://github.com/noneprivacy) for being a sounding board and offering help and advice when it comes to bug fixes.
+All tools created by Jordan Wildon (@jordanwildon). Special thanks go to [Giacomo Giallombardo](https://github.com/aaarghhh) for adding additional features and code refactoring, [jkctech](https://github.com/jkctech/Telegram-Trilateration) for collaboration on location lookup via the 'People Near Me' feature, and Alex Newhouse (@AlexBNewhouse) for his help with Telepathy v1. Shoutout also to [Francesco Poldi](https://github.com/pielco11) for being a sounding board and offering help and advice when it comes to bug fixes.
 
-Where possible, credit for the use of this tool in published research is desired, but not required. This can either come in the form of crediting the author, or crediting Telepathy itself (preferably with a link).
+Where possible, credit for the use of this tool in published research is desired, but not required. This can either come in the form of crediting Jordan Wildon, Prose Intelligence, or crediting Telepathy itself.
