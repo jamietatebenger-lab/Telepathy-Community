@@ -12,14 +12,14 @@ Telepathy-Community is the public release of Telepathy, a Python command-line OS
 
 **This repository is not actively maintained, and the rest of this README does not reflect that.** The last change to the toolkit's own source was on 2024-07-12. Every commit since is repository housekeeping: security-workflow caller stubs on 2026-08-07 and a Dependabot dependency bump on 2026-08-10. The published package on PyPI, `telepathy` 2.3.4, was last uploaded on 2024-07-12 and has not been republished since. There are 41 open issues; installation and runtime failure reports filed between 2023 and 2025 stand with no maintainer reply. Sections of this README written in the future tense — the upcoming-changes and upcoming-features lists, and the statements that deeper analytics and further location-scanning support are planned or being explored — describe work that is not in progress. `src/telepathy/const.py` likewise still sets `__status__ = "Development"`.
 
-Two concrete consequences for anyone arriving from the installation instructions:
+The source/install issues identified during this review have been corrected on this branch:
 
-- **The install-from-source path is broken on the default branch.** `src/telepathy/telepathy.py` does not parse: `class PlaceholderClass:` at line 1743 is followed by an unindented body, raising `IndentationError` at line 1744. The package's main module is therefore unimportable, and `pip install -r requirements.txt` against a fresh clone produces a non-working `telepathy` command. The stale duplicate under `build/lib/telepathy/` does parse, but it is a 2024 copy that is not what an install uses. The package directories also contain `__init.py__` rather than `__init__.py`, in both `src/` and `src/telepathy/`.
-- **The two documented install paths do not agree.** `setup.py` requires `telethon == 1.36.0` while `requirements.txt` pins `Telethon==1.25.2`, so a pip install and a source install get different core libraries. Version strings disagree too: this README and `setup.py` say 2.3.4, `src/telepathy/const.py` says 2.3.2.
+- The main module now parses, package initialization files use Python's `__init__.py` name, and internal imports are package-relative so source and installed imports use the same modules.
+- `requirements.txt` and `setup.py` now agree on Telethon 1.36.0, and the source package version matches the README and package metadata at 2.3.4.
 
 The `pip3 install telepathy` path installs the July 2024 release, which predates none of the open bug reports above and has not changed since. UNKNOWN: whether the published 2.3.4 sdist carries the same syntax error as the repository source — the sdists committed under `dist/` are 2.3.2 and earlier, and the published 2.3.4 artefact was not downloaded or inspected. The clone URL given in the installation section points at the repository's former path and resolves to the current location via a GitHub redirect (HTTP 301), so it still works.
 
-This section is written against the default branch, `main`, at commit `f1a5b95`.
+The source fixes above apply to this branch. The published PyPI release remains unchanged until a new package release is made.
 
 ## Ownership
 
