@@ -14,8 +14,8 @@ Telepathy-Community is the public release of Telepathy, a Python command-line OS
 
 Two concrete consequences for anyone arriving from the installation instructions:
 
-- **The install-from-source path is broken on the default branch.** `src/telepathy/telepathy.py` does not parse: `class PlaceholderClass:` at line 1743 is followed by an unindented body, raising `IndentationError` at line 1744. The package's main module is therefore unimportable, and `pip install -r requirements.txt` against a fresh clone produces a non-working `telepathy` command. The stale duplicate under `build/lib/telepathy/` does parse, but it is a 2024 copy that is not what an install uses. The package directories also contain `__init.py__` rather than `__init__.py`, in both `src/` and `src/telepathy/`.
-- **The two documented install paths do not agree.** `setup.py` requires `telethon == 1.36.0` while `requirements.txt` pins `Telethon==1.25.2`, so a pip install and a source install get different core libraries. Version strings disagree too: this README and `setup.py` say 2.3.4, `src/telepathy/const.py` says 2.3.2.
+- **The source install path has been repaired in this branch.** The CLI module now parses, package imports use package-relative paths, and the source package has a valid `__init__.py` marker.
+- **The documented install paths now agree on core metadata.** `setup.py` and `requirements.txt` both require Telethon 1.36.0, and the package version in `src/telepathy/const.py` matches this README and `setup.py` at 2.3.4.
 
 The `pip3 install telepathy` path installs the July 2024 release, which predates none of the open bug reports above and has not changed since. UNKNOWN: whether the published 2.3.4 sdist carries the same syntax error as the repository source — the sdists committed under `dist/` are 2.3.2 and earlier, and the published 2.3.4 artefact was not downloaded or inspected. The clone URL given in the installation section points at the repository's former path and resolves to the current location via a GitHub redirect (HTTP 301), so it still works.
 
@@ -191,7 +191,7 @@ Telegram chats are organised into three key types: Channels, Megagroups/Supergro
 
 
 ## Upcoming changes
-In some environments (particularly Windows), Telepathy struggles to effectively manage files and can sometimes produce errors. Fixes for these errors will come in due course.
+The source-install errors previously noted above have been corrected in this branch. The published PyPI package has not been updated.
 
 Upcoming features include:
 

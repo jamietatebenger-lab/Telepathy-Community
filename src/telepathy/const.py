@@ -1,6 +1,6 @@
 __author__ = "Jordan Wildon (@jordanwildon)"
 __license__ = "MIT License"
-__version__ = "2.3.2"
+__version__ = "2.3.4"
 __maintainer__ = "Jordan Wildon"
 __email__ = "j.wildon@pm.me"
 __status__ = "Development"
